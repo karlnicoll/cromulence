@@ -118,6 +118,28 @@ class TestDictionary(unittest.TestCase):
         # Scrabble scoring should have ranked these words.
         self.assertEqual(output_wordlist, expected_wordlist)
 
+    def test_incorrect_eliminates_all_words_with_that_character(self):
+        d = Dictionary(["ISLET", "SATIN", "SUING"])
+
+        guess = Guess(
+            [
+                ("I", GameResponse.ELSEWHERE),
+                ("S", GameResponse.ELSEWHERE),
+                ("L", GameResponse.INCORRECT),
+                ("E", GameResponse.INCORRECT),
+                ("T", GameResponse.INCORRECT),
+            ]
+        )
+
+        # Guess should eliminate "ABC" and "XYZ" from the dictionary since "C"
+        # is not a valid character in the answer, and "XYZ" doesn't contain
+        # "B".
+        d2 = d.prune(guess)
+        output_wordlist = [word for word in d2]
+        expected_wordlist = ["SUING"]
+
+        self.assertEqual(expected_wordlist, output_wordlist)
+
     def test_official_word_list_returns_dictionary(self):
         def fake_download_function():
             return ["ABC", "DEF", "GHI"]

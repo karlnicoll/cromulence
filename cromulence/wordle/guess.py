@@ -248,15 +248,13 @@ class Guess:
             ``self._match_incorrect()``).
         """
 
-        for i, tpl in enumerate(self._parts):
+        for tpl in self._parts:
             guess_character, game_response = tpl
 
             if game_response == GameResponse.INCORRECT:
                 for j, ch in enumerate(word):
                     if (ch == guess_character) and (not character_matched_list[j]):
                         return (False, character_matched_list)
-
-                character_matched_list[i] = True
 
         return (True, character_matched_list)
 

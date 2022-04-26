@@ -5,6 +5,33 @@ word games.
 
 ## Wordle Solver
 
+The Wordle solver interactive program can be called with `cromulence-wordle`:
+
+```shell
+$ cromulence-wordle
+Downloading official Wordle dictionary...
+INFO:root:Downloading default dictionary from 'https://www.nytimes.com/games/wordle/index.html'...
+Success!
+Initial dictionary size: 2309 entries
+(This command will ask for input until exited using CTRL+C)
+Try 'ISLET' as your initial guess.
+Enter the game's response in the following format:
+'G'reen, 'Y'ellow, or 'B'lack.
+
+Example:
+>>> GBBYB
+Enter the Game's Response (GYB) []: YYBYT
+ERROR: input must only contain 'G', 'Y', or 'B'
+Enter the Game's Response (GYB) []: YYBYG
+Filtering dictionary...
+Filtered dictionary size: 2 entries
+Try 'HEIST'.
+Enter the Game's Response (GYB) []:
+...
+```
+
+### Using the `cromulence.wordle` Module
+
 `cromulence.wordle` is a module that can be used to optimize guessing
 strategies for "wordle-style" games. Given a dictionary (or from a downloaded
 official Wordle dictionary using `cromulence.wordle.get_default_dictionary()`)

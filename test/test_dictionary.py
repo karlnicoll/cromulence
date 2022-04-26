@@ -239,3 +239,22 @@ class TestDownloadOfficialWordleDictionary(unittest.TestCase):
         actual_word_list = _download_official_dictionary(fake_download_fun)
 
         self.assertEqual(expected_word_list, actual_word_list)
+
+    def test_empty_js_file_returns_empty_word_list(self):
+        def fake_download_fun(uri):
+            return_value = requests.Response()
+            return_value.status_code = 200
+            if uri == "https://www.nytimes.com/games/wordle/index.html":
+                return_value._content = (
+                    b'<html><script src="main.abcdef.js"></script></html>'
+                )
+            elif uri == "https://www.nytimes.com/games/wordle/main.abcdef.js":
+                return_value._content = b""
+            else:
+                return_value.status_code = 404
+            return return_value
+
+        expected_word_list = []
+        actual_word_list = _download_official_dictionary(fake_download_fun)
+
+        self.assertEqual(expected_word_list, actual_word_list)

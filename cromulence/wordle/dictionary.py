@@ -34,7 +34,7 @@ from .guess import Guess
 class _DownloadOfficialDictionaryFunc(Protocol):
     def __call__(
         self, download_fun: Callable[[str], requests.Response] = ...
-    ) -> List[str]:
+    ) -> List[str]:  # pragma: no cover
         ...
 
 

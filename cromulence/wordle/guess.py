@@ -31,7 +31,7 @@ class Guess:
     A guess response is a string-like type that holds a list of characters and
     the games responses.
 
-    Example:
+    Example::
 
         # List of tuples containing the letters in the guess, as well as the
         # game's response to those characters.

@@ -176,9 +176,6 @@ class Dictionary:
     ) -> "Dictionary":
         """Download the official Wordle dictionary from the New York Times.
 
-        Args:
-            download_fun
-
         Returns:
             A dictionary object.
 

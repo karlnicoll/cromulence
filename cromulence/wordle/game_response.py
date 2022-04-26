@@ -29,13 +29,16 @@ class GameResponse(Enum):
     """A response given by the game to the user to inform them how accurate
     their guess was.
 
-    Values:
+    **Values:**
 
-    * INCORRECT: Guessed character is not in the answer.
-    * ELSEWHERE: Guessed character is in the answer, but not where the user put
-      it ("yellow response").
-    * CORRECT: Guessed character is in the answer at the correct location
-      ("green response").
+    INCORRECT
+        Guessed character is not in the answer.
+    ELSEWHERE
+        Guessed character is in the answer, but not where the user put it
+        ("yellow response").
+    CORRECT
+        Guessed character is in the answer at the correct location ("green
+        response").
     """
 
     INCORRECT = auto()

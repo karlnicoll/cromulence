@@ -7,7 +7,7 @@ word games.
 
 The Wordle solver interactive program can be called with `cromulence-wordle`:
 
-```shell
+```text
 $ cromulence-wordle
 Downloading official Wordle dictionary...
 INFO:root:Downloading default dictionary from 'https://www.nytimes.com/games/wordle/index.html'...
@@ -27,6 +27,40 @@ Filtering dictionary...
 Filtered dictionary size: 2 entries
 Try 'HEIST'.
 Enter the Game's Response (GYB) []:
+...
+```
+
+There is also a version that supports [Quordle](https://www.quordle.com/):
+
+```text
+$ cromulence-quordle
+Downloading Quordle dictionary...
+INFO:root:Downloading default dictionary from 'https://www.quordle.com'...
+Success!
+Initial dictionary size: 2315 entries
+(This command will ask for input until exited using CTRL+C)
+Try 'AISLE' as your initial guess.
+Enter the game's responses in the following format:
+'G'reen, 'Y'ellow, or 'B'lack.
+
+Response should have four sections, representing the responses from
+each of the Quordle 'quadrants'. It doesn't matter which order you
+enter the responses, as long as you're consistent :-)
+
+Example:
+>>> GBBYB BBYBB BBBBB GGYGB
+
+If a quadrant is solved, enter BBBBBB.
+Enter the Game's Response (GYB) []: yybbb byybb bggby bbybb
+Filtering dictionary 1...
+Filtered dictionary size: 42 entries
+Filtering dictionary 2...
+Filtered dictionary size: 41 entries
+Filtering dictionary 3...
+Filtered dictionary size: 4 entries
+Filtering dictionary 4...
+Filtered dictionary size: 92 entries
+Try 'RISEN'.
 ...
 ```
 

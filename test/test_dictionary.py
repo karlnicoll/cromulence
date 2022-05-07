@@ -193,7 +193,7 @@ class TestDownloadOfficialWordleDictionary(unittest.TestCase):
                 # When script contents is requested, return a fake (but valid)
                 # Javascript block.
                 return_value._content = (
-                    b'stuff(); mo=["abc","def","ghi"]; more_stuff();'
+                    b'stuff(); ko=["abc","def","ghi"]; more_stuff();'
                 )
             else:
                 return_value.status_code = 404
@@ -252,7 +252,7 @@ class TestDownloadOfficialWordleDictionary(unittest.TestCase):
                     b'<html><script src="main.abcdef.js"></script></html>'
                 )
             elif uri == "https://www.nytimes.com/games/wordle/main.abcdef.js":
-                return_value._content = b"stuff(); mo=[]; more_stuff();"
+                return_value._content = b"stuff(); ko=[]; more_stuff();"
             else:
                 return_value.status_code = 404
             return return_value

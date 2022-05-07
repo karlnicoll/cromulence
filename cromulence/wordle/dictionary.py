@@ -77,7 +77,7 @@ def _download_official_dictionary(
         return []
 
     logging.debug("Searching for word list...")
-    match_data = re.search(r"(?<=mo=)\[[^]]*\]", js)
+    match_data = re.search(r"(?<=ko=)\[[^]]*\]", js)
 
     if not match_data:
         logging.error("Failed to find word list.")

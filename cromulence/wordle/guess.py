@@ -179,6 +179,17 @@ class Guess:
             ``self._match_incorrect()``).
         """
 
+        # This array contains all the characters we already marked as "found" in
+        # the guess. If the guess has double of the same character, the first
+        # occurrence of that character will match all occurrences in the word,
+        # and any subsequent occurrences will fail to find a letter in the word
+        # that wasn't already martched.
+        #
+        # Therefore, check this array, if the guess already scanned the word for
+        # a character, subsequent attempts should just attempt to ensure that
+        # the character appears multiple times.
+        character_count_mismatches = {}
+
         for i, tpl in enumerate(self._parts):
             guess_character, game_response = tpl
 
@@ -188,6 +199,17 @@ class Guess:
                     # means that the character must appear in this string, but
                     # not at index i).
                     return (False, character_matched_list)
+
+                if guess_character in character_count_mismatches:
+                    unmatched_count = character_count_mismatches[guess_character]
+                    if unmatched_count > 0:
+                        character_count_mismatches[guess_character] -= 1
+                    else:
+                        # Character already exists in string, but not enough
+                        # times.
+                        return (False, character_matched_list)
+                    continue
+
 
                 match_found = False
                 for j, ch in enumerate(word):
@@ -211,6 +233,10 @@ class Guess:
                     # consider it a match.
                     character_matched_list[j] = True
                     match_found = True
+                    if guess_character in character_count_mismatches:
+                        character_count_mismatches[guess_character] += 1
+                    else:
+                        character_count_mismatches[guess_character] = 0
 
                 if not match_found:
                     # Elsewhere means that the character must appear somewhere.

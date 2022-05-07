@@ -200,6 +200,42 @@ class TestGuess(unittest.TestCase):
         # exists.
         self.assertFalse(actual)
 
+    def test_guess_with_double_character_allows_answer_with_double_character(
+        self,
+    ):
+        g = Guess(
+            [
+                ("w", GameResponse.INCORRECT),
+                ("o", GameResponse.ELSEWHERE),
+                ("r", GameResponse.ELSEWHERE),
+                ("r", GameResponse.ELSEWHERE),
+                ("y", GameResponse.INCORRECT),
+            ]
+        )
+
+        actual = g.match("order")
+
+        # Should match
+        self.assertTrue(actual)
+
+    def test_guess_with_double_character_disallows_answer_with_single_character(
+        self,
+    ):
+        g = Guess(
+            [
+                ("w", GameResponse.INCORRECT),
+                ("o", GameResponse.ELSEWHERE),
+                ("r", GameResponse.ELSEWHERE),
+                ("r", GameResponse.ELSEWHERE),
+                ("y", GameResponse.INCORRECT),
+            ]
+        )
+
+        actual = g.match("odour")
+
+        # Should match
+        self.assertFalse(actual)
+
     def test_str(self):
         g = Guess(
             [

@@ -86,15 +86,61 @@ def convert_to_guess(word: str, gyb: str) -> Guess:
     )
 
 
+def filter_dict(word: str, d: Dictionary) -> Dictionary:
+    """Filter the dictionary from user input."""
+    valid_gyb_values = False
+    while not valid_gyb_values:
+        gyb_values = click.prompt(
+            "Enter the Game's Response (GYB)", default="", type=str
+        )
+
+        if len(gyb_values) != len(word):
+            click.echo(
+                f"ERROR: input must be same size as guess word "
+                f"({len(word)} letters)"
+            )
+        elif not re.fullmatch("[gybGYB]+", gyb_values):
+            click.echo("ERROR: input must only contain 'G', 'Y', or 'B'")
+        else:
+            valid_gyb_values = True
+
+    guess = convert_to_guess(word, gyb_values.upper())
+    click.echo("Filtering dictionary...")
+    d = d.prune(guess)
+    click.echo(f"Filtered dictionary size: {len(d)} entries")
+
+    return d
+
+
 @click.command()
-def main():
+@click.option(
+    "-s",
+    "--save-me",
+    is_flag=True,
+    help=(
+        "Set this option if you've already started guessing and need to fill in "
+        "some previous guesses"
+    )
+)
+def main(save_me: bool):
     click.echo("Downloading official Wordle dictionary...")
     try:
         d = Dictionary.official()
-    except RuntimeError:
-        click.echo("Failed to get Wordle dictionary!")
+    except RuntimeError as ex:
+        click.echo(f"Failed to get Wordle dictionary (error: {ex})!")
         raise click.Abort()
     click.echo("Success!")
+
+    current_guesses_set = not save_me
+    while not current_guesses_set:
+        word = click.prompt(
+            "Enter your guess word. Use blank to end guesses", default="", type=str
+        )
+        if word:
+            d = filter_dict(word.upper(), d)
+        else:
+            current_guesses_set = True
+
     click.echo(f"Initial dictionary size: {len(d)} entries")
 
     click.echo("(This command will ask for input until exited using CTRL+C)")
@@ -108,23 +154,8 @@ def main():
     click.echo(">>> GBBYB")
 
     while d:
-        gyb_values = click.prompt(
-            "Enter the Game's Response (GYB)", default="", type=str
-        )
-
-        if len(gyb_values) != len(current_guess):
-            click.echo(
-                f"ERROR: input must be same size as guess word "
-                f"({len(current_guess)} letters)"
-            )
-        elif not re.fullmatch("[gybGYB]+", gyb_values):
-            click.echo("ERROR: input must only contain 'G', 'Y', or 'B'")
-        else:
-            guess = convert_to_guess(current_guess, gyb_values.upper())
-            click.echo("Filtering dictionary...")
-            d = d.prune(guess)
-            click.echo(f"Filtered dictionary size: {len(d)} entries")
-            current_guess = d.get_most_likely_word()
-            click.echo(f"Try '{current_guess}'.")
+        d = filter_dict(current_guess, d)
+        current_guess = d.get_most_likely_word()
+        click.echo(f"Try '{current_guess}'.")
 
     click.echo("ERROR: Dictionary has no more possible words. Sorry!")
